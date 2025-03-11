@@ -1,18 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import { decode } from "@googlemaps/polyline-codec";
 
-import { Polyline, useMap } from 'react-leaflet'
-
+import { useMap, Polyline } from 'react-leaflet'
 
 import routesService from '../services/routesService';
+
 
 
 // Draws Directions on Map
 const DirectionsPolyline = () => {
 
+    // Refs
     const map = useMap()
     const polylinePathRef = useRef<L.Polyline>(null)
     
+    // Local States
     const [polylinePath, setPolylinePath] = useState<any[]>([])
 
 
@@ -35,9 +37,8 @@ const DirectionsPolyline = () => {
         })
     }, [])
 
-    // Get Directions from API
+    // Set Bounds top fit the directions polyline
     useEffect(() => {        
-        // // Get Directions from API    
         if(polylinePathRef.current?.getBounds() ){
             const pathBounds = polylinePathRef.current.getBounds()
             console.log("Bounds:", polylinePathRef.current.getBounds())
@@ -50,8 +51,9 @@ const DirectionsPolyline = () => {
         }
 
     }, [polylinePath])
-    
 
+
+    // Render Polyline
     return <Polyline ref={polylinePathRef} pathOptions={{ color: 'blue' }} positions={polylinePath} />
 
 

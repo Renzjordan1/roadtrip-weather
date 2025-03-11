@@ -3,24 +3,27 @@ const baseUrl = 'https://routes.googleapis.com'
 
 const getRoute = async () => {
 
+    // Need API key for Google Maps API
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
+    // API route for 'Google Routes API'
     const url = baseUrl + "/directions/v2:computeRoutes"
 
+    // Sample hard-coded request data
     const request = {
         "origin":{
           "location":{
             "latLng":{
-              "latitude": 37.419734,
-              "longitude": -122.0827784
+              "latitude": 42.5248,
+              "longitude": -83.5363
             }
           }
         },
         "destination":{
           "location":{
             "latLng":{
-              "latitude": 37.417670,
-              "longitude": -122.079595
+              "latitude": 38.2542,
+              "longitude": -85.7594
             }
           }
         },
@@ -37,6 +40,7 @@ const getRoute = async () => {
       }
       
 
+    // Valid config for API to work
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -44,7 +48,11 @@ const getRoute = async () => {
             'X-Goog-FieldMask': 'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline'
         }
     };
+
+
+    // Sending request
     const response = await axios.post(url, request, config)
+  
     return response.data
 }
 

@@ -2,16 +2,15 @@ import './App.css'
 import 'leaflet/dist/leaflet.css';
 
 
-
 import WeatherInfo from './components/WeatherInfo'
-import MapDirections from './components/MapDirections'
+import MapCanvas from './components/MapCanvas'
 
 
 function App() {
 
   return (
     <>
-      <MapDirections />
+      <MapCanvas />
       <WeatherInfo />
     </>
   )

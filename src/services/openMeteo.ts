@@ -14,7 +14,6 @@ const getWeatherData = async (lat: number, lon: number) => {
         "minutely_15": ["is_day", "temperature_2m", "rain", "showers", "snowfall", "weather_code", "wind_speed_10m", "wind_gusts_10m", "visibility"],
         "hourly": ["showers", "snow_depth"],
         "temperature_unit": "fahrenheit",
-        "timezone": "America/New_York",
         "forecast_days": 7
     };
     const url = "https://api.open-meteo.com/v1/forecast";
@@ -67,7 +66,7 @@ const getWeatherData = async (lat: number, lon: number) => {
 
 
     // Transform API data into an array of the data for each specific time
-    let m15Data = []
+    let m15Data: {}[] = []
 
     for (let i = 0; i < weatherData.minutely15.time.length; i++) {
 

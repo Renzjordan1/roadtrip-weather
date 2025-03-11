@@ -4,44 +4,47 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { DateTimePicker } from '@mui/x-date-pickers';
 
+import useLatLngStore from '../stores/SelectedLatLng'
 
 import openMeteo from '../services/openMeteo'
+
+import { convertISOToTimezone, roundTimeToXMin } from '../helpers/timeFuncs';
 
 
 
 // Render Weather Information
 const WeatherInfo = () => {
 
-    // Look-up parameters 
-    const [latitude, setLatitude] = useState(42.5248)
-    const [longitude, setLongitude] = useState(-83.5363)
-    const [datetime, setDatetime] = useState<Date | null>(null)
+    // Local states
+    const [datetime, setDatetime] = useState<Date | null>(roundTimeToXMin(15, new Date))
+    const [specificInfo, setSpecificInfo] = useState<{}>()
 
-    // Specified Info to show
-    const [specInfo, setSpecInfo] = useState<{}>()
+    // Global Stores
+    const latLngStore = useLatLngStore()
 
 
     // Update weather data when params change
     useEffect(() => {
-        openMeteo.getWeatherData(latitude, longitude)
+        openMeteo.getWeatherData(latLngStore.lat, latLngStore.lng)
         .then(response => { 
             console.log(response)
-            setSpecInfo(response.find((item: any) => item.time == datetime?.toISOString()))
+            setSpecificInfo(response.find((item: any) => item.time == datetime?.toISOString()))
             console.log(response.find((item: any) => item.time == datetime?.toISOString()))
         })
-    }, [latitude, longitude, datetime])
+    }, [latLngStore, datetime])
 
 
-    // Inputs and Outputs data to user
+    // Input location + time, Output weather data
     return (
         <>
+        {/* Inputs */}
         <div>
             Latitude: 
             <input
             type="number"
-            value={latitude}
+            value={latLngStore.lat}
             name="Latitude"
-            onChange={({ target }) => setLatitude(target.valueAsNumber)}
+            onChange={({ target }) => latLngStore.setLat(target.valueAsNumber)}
             />
         </div>
         <br />
@@ -50,9 +53,9 @@ const WeatherInfo = () => {
             Latitude: 
             <input
             type="number"
-            value={longitude}
+            value={latLngStore.lng}
             name="Longitude"
-            onChange={({ target }) => setLongitude(target.valueAsNumber)}
+            onChange={({ target }) => latLngStore.setLng(target.valueAsNumber)}
             />
         </div>
         <br />
@@ -65,20 +68,18 @@ const WeatherInfo = () => {
                 value={datetime}
                 onChange={(newValue) => {
                     if(newValue){
-                        var coeff = 1000 * 60 * 15;
-                        setDatetime(new Date(Math.round(newValue.getTime() / coeff) * coeff))
+                        setDatetime(roundTimeToXMin(15, newValue))
                     }
                 }}
                 />
             </LocalizationProvider>
         </div>
         <br />
-        
 
-
+        {/* Outputs */}
         <div>
-            <p>{datetime?.toISOString()}</p>
-            <p>{JSON.stringify(specInfo)}</p>
+            <p>{convertISOToTimezone(datetime?.toISOString(), "America/New_York").toString()}</p>
+            <p>{JSON.stringify(specificInfo)}</p>
         </div>
         </>
     )
