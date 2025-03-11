@@ -1,26 +1,26 @@
-import {APIProvider, Map} from '@vis.gl/react-google-maps';
+import { MapContainer, TileLayer } from 'react-leaflet'
 
-import Directions from './Directions';
+import DirectionsPolyline from './DirectionsPolyline';
+
 
 
 // Render Map
 const MapDirections = () => {
 
 
-    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+    const wixomCenter = {lat: 42.5248, lng: -83.5363}
+    const googleCenter = {lat: 37.419734, lng: -122.0827784}
 
-
+    
     return (
     <>
-        <APIProvider apiKey={apiKey}>
-            <Map
-            style={{width: '100%', height: '100vh'}}
-            // defaultCenter={{lat: 42.5248, lng: -83.5363}}
-            defaultCenter={{lat: 37.419734, lng: -122.0827784}}
-            defaultZoom={2}
+        <MapContainer center={googleCenter} zoom={13} scrollWheelZoom={false}>
+            <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Directions />
-        </APIProvider>
+            <DirectionsPolyline />
+        </MapContainer>
     </>
     )
 

@@ -1,4 +1,6 @@
 import './App.css'
+import 'leaflet/dist/leaflet.css';
+
 
 
 import WeatherInfo from './components/WeatherInfo'
