@@ -1,7 +1,7 @@
 import axios from 'axios'
 const baseUrl = 'https://routes.googleapis.com'
 
-const getRoute = async () => {
+const getRoute = async (orig, dest) => {
 
     // Need API key for Google Maps API
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -9,21 +9,21 @@ const getRoute = async () => {
     // API route for 'Google Routes API'
     const url = baseUrl + "/directions/v2:computeRoutes"
 
-    // Sample hard-coded request data
+    // Request with origin and destination
     const request = {
         "origin":{
           "location":{
             "latLng":{
-              "latitude": 42.5248,
-              "longitude": -83.5363
+              "latitude": orig[0],
+              "longitude": orig[1]
             }
           }
         },
         "destination":{
           "location":{
             "latLng":{
-              "latitude": 38.2542,
-              "longitude": -85.7594
+              "latitude": dest[0],
+              "longitude": dest[1]
             }
           }
         },

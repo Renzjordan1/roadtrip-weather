@@ -1,10 +1,14 @@
 #root {
-  width: 90%;
+  width: 100%;
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+
+  display: flex;
+  flex-wrap: wrap;
 }
+
 
 .logo {
   height: 6em;
@@ -44,6 +48,21 @@
 
 
 .leaflet-container {
-  width: 100wh; 
+  width: 100%; 
   height: 100vh;
+}
+
+.child-left {
+  border: 2px solid blueviolet;
+  margin: 10px;
+  width: 65%
+}
+
+.child-right {
+  border: 2px solid blueviolet;
+  margin: 10px;
+  width: 25%;
+  min-width: 10vw;
+
+
 }

@@ -3,7 +3,11 @@ import { decode } from "@googlemaps/polyline-codec";
 
 import { useMap, Polyline } from 'react-leaflet'
 
+import useEnrouteWPStore from '../stores/EnrouteWP';
+
 import routesService from '../services/routesService';
+
+import { evenlySpacedPoints } from '../helpers/pointFuncs';
 
 
 
@@ -17,22 +21,36 @@ const DirectionsPolyline = () => {
     // Local States
     const [polylinePath, setPolylinePath] = useState<any[]>([])
 
+    // Global Stores
+    const enrouteWPStore = useEnrouteWPStore()
+
 
     // Get Directions from API
-    useEffect(() => {        
-        routesService.getRoute()
+    useEffect(() => {      
+        const orig = [42.5248, -83.5363] 
+        const dest =  [38.2542, -85.7594]
+        routesService.getRoute(orig, dest)
         .then(response => {
 
             console.log("Directions:", response)
 
             const decodedPolyline = decode(response.routes[0].polyline.encodedPolyline, 5)
 
+            console.log("Polyline:", decodedPolyline)
+
             setPolylinePath(decodedPolyline.map(arr => {
                 return {
                     lat: arr[0],
                     lng: arr[1]
                 }
-            }))     
+            }))   
+            
+
+            // Set X Waypoints (use to see weather throughout the route)
+            const waypoints = evenlySpacedPoints(decodedPolyline, 7)
+            console.log("Waypoints:", waypoints)
+            enrouteWPStore.setWaypoints(waypoints, new Date())
+
 
         })
     }, [])
@@ -51,6 +69,7 @@ const DirectionsPolyline = () => {
         }
 
     }, [polylinePath])
+
 
 
     // Render Polyline
