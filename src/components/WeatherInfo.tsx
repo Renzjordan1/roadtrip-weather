@@ -10,7 +10,7 @@ import openMeteo from '../services/openMeteo'
 
 import { convertISOToTimezone, roundTimeToXMin } from '../helpers/timeFuncs';
 import { roundToDecimal } from '../helpers/mathFuncs';
-import { WeatherObject } from '../types/WeatherTypes';
+import { WeatherObject } from '../types/myTypes';
 
 
 
@@ -20,6 +20,7 @@ const WeatherInfo = () => {
     // Local states
     const [datetime, setDatetime] = useState<Date | null>(roundTimeToXMin(15, new Date))
     const [specificInfo, setSpecificInfo] = useState<WeatherObject>({})
+    
     // Global Stores
     const latLngStore = useLatLngStore()
 

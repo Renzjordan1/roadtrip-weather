@@ -1,7 +1,7 @@
 import axios from 'axios'
 const baseUrl = 'https://routes.googleapis.com'
 
-const getRoute = async (orig, dest) => {
+const getRoute = async (orig, dest, depTime) => {
 
     // Need API key for Google Maps API
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -29,6 +29,7 @@ const getRoute = async (orig, dest) => {
         },
         "travelMode": "DRIVE",
         "routingPreference": "TRAFFIC_AWARE",
+        "departureTime": depTime,
         "computeAlternativeRoutes": false,
         "routeModifiers": {
           "avoidTolls": false,
@@ -52,7 +53,7 @@ const getRoute = async (orig, dest) => {
 
     // Sending request
     const response = await axios.post(url, request, config)
-  
+    console.log(response)
     return response.data
 }
 

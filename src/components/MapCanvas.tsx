@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { useMap, MapContainer, TileLayer } from 'react-leaflet'
+import { useRef } from 'react';
+import { MapContainer, TileLayer } from 'react-leaflet'
 
 
 import DirectionsPolyline from './DirectionsPolyline';
@@ -22,7 +22,7 @@ const MapCanvas = () => {
     // Render Map
     return (
     <>
-        <MapContainer ref={mapRef} zoom={13}>
+        <MapContainer center={[41.850033, -87.6500523]} ref={mapRef} zoom={5}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -7,7 +7,7 @@ import openMeteo from '../services/openMeteo'
 
 import { convertISOToTimezone, roundTimeToXMin } from '../helpers/timeFuncs';
 import { roundToDecimal } from '../helpers/mathFuncs';
-import { WeatherObject } from '../types/WeatherTypes';
+import { WeatherObject } from '../types/myTypes';
 
 
 
@@ -29,11 +29,11 @@ const WeatherEnroute = () => {
         const wpTimeFunc = async (waypoints, startTime) => {
 
             // Starting point
-            var arrivalArr = [ {wp: waypoints[0], time: startTime} ]
+            var arrivalArr = [ {wp: waypoints[0], time: new Date(startTime)} ]
 
             // Next points
             for (let i = 1; i < waypoints.length; i++) {
-                let route = await routesService.getRoute(waypoints[0], waypoints[i])
+                let route = await routesService.getRoute(waypoints[0], waypoints[i], startTime)
 
                 let duration = Number(route.routes[0].duration.slice(0, -1))
                 let arriveTime = new Date(startTime)
@@ -45,7 +45,7 @@ const WeatherEnroute = () => {
             }
 
             // Set the state at once inside this async so state updates correctly
-            // console.log("WP TIMES:", arrivalArr)
+            console.log("WP TIMES:", arrivalArr)
             setEnrouteTimes(arrivalArr)
         }
 

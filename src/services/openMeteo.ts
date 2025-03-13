@@ -4,7 +4,7 @@ import WMOCodes from '../assets/WMOCodes.json';
 
 import geocodeService from './geocodeService';
 
-import { WeatherObject } from '../types/WeatherTypes';
+import { WeatherObject } from '../types/myTypes';
 
 
 

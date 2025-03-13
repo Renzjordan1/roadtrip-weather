@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-// Store to share selected Latitude and Longitude betwen Map and Weather data
+// Store to share waypoints in between the route between components
 type EnrouteWPState = {
     startTime: 0,
     waypoints: [],

@@ -4,6 +4,8 @@ import { decode } from "@googlemaps/polyline-codec";
 import { useMap, Polyline } from 'react-leaflet'
 
 import useEnrouteWPStore from '../stores/EnrouteWP';
+import usePlacesStore from '../stores/SelectedPlaces';
+import useDepTimeStore from '../stores/SelectedDepTime';
 
 import routesService from '../services/routesService';
 
@@ -23,37 +25,44 @@ const DirectionsPolyline = () => {
 
     // Global Stores
     const enrouteWPStore = useEnrouteWPStore()
+    const placesStore = usePlacesStore()
+    const depTimeStore = useDepTimeStore()
+
+
 
 
     // Get Directions from API
-    useEffect(() => {      
-        const orig = [42.5248, -83.5363] 
-        const dest =  [38.2542, -85.7594]
-        routesService.getRoute(orig, dest)
-        .then(response => {
+    useEffect(() => {    
+        // Using inputs from other components for Route API request
+        if(Object.keys(placesStore.orig).length !== 0 && Object.keys(placesStore.dest).length !== 0 && depTimeStore.depTime){
+            const orig = [placesStore.orig.lat, placesStore.orig.lng] 
+            const dest =  [placesStore.dest.lat, placesStore.dest.lng]
 
-            // console.log("Directions:", response)
+            routesService.getRoute(orig, dest, depTimeStore.depTime)
+            .then(response => {
 
-            const decodedPolyline = decode(response.routes[0].polyline.encodedPolyline, 5)
+                console.log("Directions:", response)
 
-            // console.log("Polyline:", decodedPolyline)
+                const decodedPolyline = decode(response.routes[0].polyline.encodedPolyline, 5)
 
-            setPolylinePath(decodedPolyline.map(arr => {
-                return {
-                    lat: arr[0],
-                    lng: arr[1]
-                }
-            }))   
-            
+                console.log("Polyline:", decodedPolyline)
 
-            // Set X Waypoints (use to see weather throughout the route)
-            const waypoints = evenlySpacedPoints(decodedPolyline, 7)
-            // console.log("Waypoints:", waypoints)
-            enrouteWPStore.setWaypoints(waypoints, new Date())
+                setPolylinePath(decodedPolyline.map(arr => {
+                    return {
+                        lat: arr[0],
+                        lng: arr[1]
+                    }
+                }))   
+                
 
+                // Set X Waypoints (use to see weather throughout the route)
+                const waypoints = evenlySpacedPoints(decodedPolyline, 5)
+                // console.log("Waypoints:", waypoints)
+                enrouteWPStore.setWaypoints(waypoints, depTimeStore.depTime)
 
-        })
-    }, [])
+            })
+        }
+    }, [placesStore, depTimeStore])
 
     // Set Bounds top fit the directions polyline
     useEffect(() => {        
