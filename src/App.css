@@ -55,14 +55,26 @@
 .child-left {
   border: 2px solid blueviolet;
   margin: 10px;
-  width: 65%
+  width: 60%;
+  max-height: 100vh;
 }
 
 .child-right {
   border: 2px solid blueviolet;
   margin: 10px;
-  width: 25%;
+  width: 15%;
   min-width: 10vw;
+  max-height: 100vh;
+}
 
+.child-right2 {
+  border: 2px solid blueviolet;
+  margin: 10px;
+  width: 15%;
+  min-width: 10vw;
+}
 
+ul {
+  padding: 0;
+  list-style-position: inside;
 }

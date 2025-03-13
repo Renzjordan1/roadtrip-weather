@@ -6,6 +6,8 @@ import routesService from '../services/routesService';
 import openMeteo from '../services/openMeteo'
 
 import { convertISOToTimezone, roundTimeToXMin } from '../helpers/timeFuncs';
+import { roundToDecimal } from '../helpers/mathFuncs';
+import { WeatherObject } from '../types/WeatherTypes';
 
 
 
@@ -13,7 +15,7 @@ import { convertISOToTimezone, roundTimeToXMin } from '../helpers/timeFuncs';
 const WeatherEnroute = () => {
 
     // Local states
-    const [wpInfo, setWPInfo] = useState<any[]>([])
+    const [wpInfo, setWPInfo] = useState<WeatherObject[]>([])
     const [enrouteTimes, setEnrouteTimes] = useState<any[]>()
 
     // Global Stores
@@ -43,7 +45,7 @@ const WeatherEnroute = () => {
             }
 
             // Set the state at once inside this async so state updates correctly
-            console.log("WP TIMES:", arrivalArr)
+            // console.log("WP TIMES:", arrivalArr)
             setEnrouteTimes(arrivalArr)
         }
 
@@ -63,12 +65,15 @@ const WeatherEnroute = () => {
 
                 // Weather at each point/time
                 for (let i = 0; i < enrouteTimes.length; i++) {
-                    let weatherData = await openMeteo.getWeatherData(enrouteTimes[i].wp[0], enrouteTimes[i].wp[1])
+                    try{
+                        let weatherData = await openMeteo.getWeatherData(enrouteTimes[i].wp[0], enrouteTimes[i].wp[1])
+                        let roundTime = roundTimeToXMin(15, enrouteTimes[i].time)
+                        // console.log(weatherData.find((item: any) => item.time == roundTime.toISOString()))
+                        
+                        wpInfoClone.push(weatherData.find((item: any) => item.time == roundTime.toISOString()))
+                    } catch {
 
-                    let roundTime = roundTimeToXMin(15, enrouteTimes[i].time)
-                    // console.log(weatherData.find((item: any) => item.time == roundTime.toISOString()))
-                    
-                    wpInfoClone.push(weatherData.find((item: any) => item.time == roundTime.toISOString()))
+                    }
                 }
 
                 // Set the state at once inside this async so state updates correctly
@@ -87,8 +92,44 @@ const WeatherEnroute = () => {
     // Dispplay Enroute Weather Info
     return (
         <div>
-        <h3 style={{ textAlign: 'center' }}>Weather on the Way</h3>
-        {JSON.stringify(wpInfo)}
+            <h3 style={{ textAlign: 'center' }}>Weather on the Way</h3>
+            {wpInfo.map((wpWeather, i) => {
+                return (
+                        <div style={{borderTop: 'dotted', borderBottom: 'dotted'}} key={i}>
+                            <p style={{ fontWeight:'bold' }}>{wpWeather['location']}</p>
+                            <ul>
+                            {Object.keys(wpWeather).map((key, j) => {
+                                if (key == "time") {
+                                    return <li key={j}>Time: {convertISOToTimezone(wpWeather[key], "America/New_York").toString()}</li>
+                                }
+                                else if (key == "temp") {
+                                    return <li key={j}>Temperature: {roundToDecimal(wpWeather[key], 100)} &deg;F </li>
+                                } else if (key == "rain") {
+                                    return <li key={j}>Rain: {roundToDecimal(wpWeather[key], 100)} mm </li>
+                                } else if (key == "showers") {
+                                    return <li key={j}>Showers: {roundToDecimal(wpWeather[key], 100)} mm </li>
+                                } else if (key == "snowfall") {
+                                    return <li key={j}> Snowfall: {roundToDecimal(wpWeather[key], 100)} mm </li>
+                                } else if (key == "weatherCode" && wpWeather[key]) {
+                                    return <li key={j}>Conditons: {wpWeather[key]['description']} 
+                                        <img style={{ verticalAlign: 'middle' }} src={wpWeather[key]['image']} /> </li>
+                                } else if (key == "windGust") {
+                                    return <li key={j}>Wind Gust: {roundToDecimal(wpWeather[key], 100)} km/h </li>
+                                } else if (key == "windSpeed") {
+                                    return <li key={j}>Wind Speed: {roundToDecimal(wpWeather[key], 100)} km/h </li>
+                                }
+                                else if (key == "windSpeed") {
+                                    return <li key={j}>Wind Speed: {roundToDecimal(wpWeather[key], 100)} km/h </li>
+                                }else if (key == "visibility") {
+                                    return <li key={j}>Visibility: {roundToDecimal(wpWeather[key], 100)} m </li>
+                                }
+                            })}
+                            </ul>
+                            < br/>
+                        </div>
+                    )
+                })
+            }
         </div>
     )
 

@@ -17,8 +17,11 @@ function App() {
       <div className='child-right'>
         <WeatherInfo />
       </div>
+      <div className='child-right2'>
+        <WeatherEnroute />
+      </div>
       
-      <WeatherEnroute />
+
 
     </>
   )

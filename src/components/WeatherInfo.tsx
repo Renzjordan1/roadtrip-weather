@@ -9,6 +9,8 @@ import useLatLngStore from '../stores/SelectedLatLng'
 import openMeteo from '../services/openMeteo'
 
 import { convertISOToTimezone, roundTimeToXMin } from '../helpers/timeFuncs';
+import { roundToDecimal } from '../helpers/mathFuncs';
+import { WeatherObject } from '../types/WeatherTypes';
 
 
 
@@ -17,8 +19,7 @@ const WeatherInfo = () => {
 
     // Local states
     const [datetime, setDatetime] = useState<Date | null>(roundTimeToXMin(15, new Date))
-    const [specificInfo, setSpecificInfo] = useState<{}>()
-
+    const [specificInfo, setSpecificInfo] = useState<WeatherObject>({})
     // Global Stores
     const latLngStore = useLatLngStore()
 
@@ -27,10 +28,14 @@ const WeatherInfo = () => {
     useEffect(() => {
         openMeteo.getWeatherData(latLngStore.lat, latLngStore.lng)
         .then(response => { 
-            console.log(response)
-            setSpecificInfo(response.find((item: any) => item.time == datetime?.toISOString()))
-            console.log(response.find((item: any) => item.time == datetime?.toISOString()))
+            const infoFound = response.find((item: any) => item.time == datetime?.toISOString())
+            if (infoFound){
+                console.log("Specific Info:", infoFound)
+                setSpecificInfo(infoFound)
+            } 
+            
         })
+
     }, [latLngStore, datetime])
 
 
@@ -78,8 +83,34 @@ const WeatherInfo = () => {
 
         {/* Outputs */}
         <div>
+            <p style={{ fontWeight:'bold' }}>{specificInfo['location']}</p>
             <p>{convertISOToTimezone(datetime?.toISOString(), "America/New_York").toString()}</p>
-            <p>{JSON.stringify(specificInfo)}</p>
+            <ul>
+            {Object.keys(specificInfo).map((key, i) => {
+                if (key == "temp") {
+                    return <li key={i}>Temperature: {roundToDecimal(specificInfo[key], 100)} &deg;F </li>
+                } else if (key == "rain") {
+                    return <li key={i}>Rain: {roundToDecimal(specificInfo[key], 100)} mm </li>
+                } else if (key == "showers") {
+                    return <li key={i}>Showers: {roundToDecimal(specificInfo[key], 100)} mm </li>
+                } else if (key == "snowfall") {
+                    return <li key={i}> Snowfall: {roundToDecimal(specificInfo[key], 100)} mm </li>
+                } else if (key == "weatherCode" && specificInfo[key]) {
+                    return <li key={i}>Conditons: {specificInfo[key]['description']} 
+                        <img style={{ verticalAlign: 'middle' }} src={specificInfo[key]['image']} /> 
+                        </li>
+                } else if (key == "windGust") {
+                    return <li key={i}>Wind Gust: {roundToDecimal(specificInfo[key], 100)} km/h </li>
+                } else if (key == "windSpeed") {
+                    return <li key={i}>Wind Speed: {roundToDecimal(specificInfo[key], 100)} km/h </li>
+                }
+                else if (key == "windSpeed") {
+                    return <li key={i}>Wind Speed: {roundToDecimal(specificInfo[key], 100)} km/h </li>
+                }else if (key == "visibility") {
+                    return <li key={i}>Visibility: {roundToDecimal(specificInfo[key], 100)} m </li>
+                }
+            })}
+            </ul>
         </div>
         </>
     )

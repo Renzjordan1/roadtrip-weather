@@ -2,6 +2,9 @@ import { fetchWeatherApi } from 'openmeteo';
 
 import WMOCodes from '../assets/WMOCodes.json';
 
+import geocodeService from './geocodeService';
+
+import { WeatherObject } from '../types/WeatherTypes';
 
 
 
@@ -35,7 +38,17 @@ const getWeatherData = async (lat: number, lon: number) => {
     
     const minutely15 = response.minutely15()!;
     const hourly = response.hourly()!;
-    
+
+    // Get actual location name
+    var actualLocation = await geocodeService.getReverseGeocode(latitude, longitude)
+    try{
+        actualLocation = actualLocation.results[actualLocation.results.length-4].formatted_address
+    } catch {
+        console.log("Location not found")
+        actualLocation = null
+    }
+
+
     // Note: The order of weather variables in the URL query and the indices below need to match!
     const weatherData = {
     
@@ -76,17 +89,18 @@ const getWeatherData = async (lat: number, lon: number) => {
 
         m15Data.push(
             {
+                location: actualLocation,
                 isDay: weatherData.minutely15.isDay[i],
                 time: weatherData.minutely15.time[i].toISOString(),
                 temp: weatherData.minutely15.temperature2m[i],
                 rain: weatherData.minutely15.rain[i],
                 showers: weatherData.minutely15.showers[i],
                 snowfall: weatherData.minutely15.snowfall[i],
-                weatherCode: WMOCodes[weatherCodeNum][dayOrNight]['description'],
+                weatherCode: WMOCodes[weatherCodeNum][dayOrNight],
                 windSpeed: weatherData.minutely15.windSpeed10m[i],
                 windGust: weatherData.minutely15.windGusts10m[i],
                 visibility: weatherData.minutely15.visibility[i]
-            }
+            } as WeatherObject
         );
     }
     

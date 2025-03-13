@@ -32,11 +32,11 @@ const DirectionsPolyline = () => {
         routesService.getRoute(orig, dest)
         .then(response => {
 
-            console.log("Directions:", response)
+            // console.log("Directions:", response)
 
             const decodedPolyline = decode(response.routes[0].polyline.encodedPolyline, 5)
 
-            console.log("Polyline:", decodedPolyline)
+            // console.log("Polyline:", decodedPolyline)
 
             setPolylinePath(decodedPolyline.map(arr => {
                 return {
@@ -48,7 +48,7 @@ const DirectionsPolyline = () => {
 
             // Set X Waypoints (use to see weather throughout the route)
             const waypoints = evenlySpacedPoints(decodedPolyline, 7)
-            console.log("Waypoints:", waypoints)
+            // console.log("Waypoints:", waypoints)
             enrouteWPStore.setWaypoints(waypoints, new Date())
 
 
@@ -59,7 +59,7 @@ const DirectionsPolyline = () => {
     useEffect(() => {        
         if(polylinePathRef.current?.getBounds() ){
             const pathBounds = polylinePathRef.current.getBounds()
-            console.log("Bounds:", polylinePathRef.current.getBounds())
+            // console.log("Bounds:", polylinePathRef.current.getBounds())
 
             try{
                 map.fitBounds(pathBounds)
