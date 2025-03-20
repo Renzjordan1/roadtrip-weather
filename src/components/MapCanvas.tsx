@@ -4,6 +4,7 @@ import { MapContainer, TileLayer } from 'react-leaflet'
 
 import DirectionsPolyline from './DirectionsPolyline';
 import MapEvents from './MapEvents';
+import MapMarkers from './MapMarkers';
 
 
 
@@ -28,6 +29,7 @@ const MapCanvas = () => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <DirectionsPolyline />
+            <MapMarkers />
             <MapEvents />
         </MapContainer>
     </>

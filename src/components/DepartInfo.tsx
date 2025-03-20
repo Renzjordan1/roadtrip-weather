@@ -107,10 +107,9 @@ const DepartInfo = () => {
         <br />
 
         <div>
-            Depart Time:
+            Depart Time: <br />
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
-                label="Controlled picker"
                 value={datetime}
                 onChange={(newValue) => {
                     if(newValue){

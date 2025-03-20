@@ -1,4 +1,5 @@
 import { fetchWeatherApi } from 'openmeteo';
+import { LatLng } from 'leaflet';
 
 import WMOCodes from '../assets/WMOCodes.json';
 
@@ -14,7 +15,7 @@ const getWeatherData = async (lat: number, lon: number) => {
     const params = {
         "latitude": lat,
         "longitude": lon,
-        "minutely_15": ["is_day", "temperature_2m", "rain", "showers", "snowfall", "weather_code", "wind_speed_10m", "wind_gusts_10m", "visibility"],
+        "minutely_15": ["is_day", "temperature_2m", "rain", "showers", "snowfall", "precipitation", "weather_code", "wind_speed_10m", "wind_gusts_10m", "visibility"],
         "hourly": ["showers", "snow_depth"],
         "temperature_unit": "fahrenheit",
         "forecast_days": 7
@@ -61,10 +62,11 @@ const getWeatherData = async (lat: number, lon: number) => {
             rain: minutely15.variables(2)!.valuesArray()!,
             showers: minutely15.variables(3)!.valuesArray()!,
             snowfall: minutely15.variables(4)!.valuesArray()!,
-            weatherCode: minutely15.variables(5)!.valuesArray()!,
-            windSpeed10m: minutely15.variables(6)!.valuesArray()!,
-            windGusts10m: minutely15.variables(7)!.valuesArray()!,
-            visibility: minutely15.variables(8)!.valuesArray()!,
+            precip: minutely15.variables(5)!.valuesArray()!,
+            weatherCode: minutely15.variables(6)!.valuesArray()!,
+            windSpeed10m: minutely15.variables(7)!.valuesArray()!,
+            windGusts10m: minutely15.variables(8)!.valuesArray()!,
+            visibility: minutely15.variables(9)!.valuesArray()!,
         },
     
         hourly: {
@@ -89,12 +91,14 @@ const getWeatherData = async (lat: number, lon: number) => {
 
         m15Data.push(
             {
+                position: {lat: latitude, lng: longitude} as LatLng,
                 location: actualLocation,
                 isDay: weatherData.minutely15.isDay[i],
                 time: weatherData.minutely15.time[i].toISOString(),
                 temp: weatherData.minutely15.temperature2m[i],
                 rain: weatherData.minutely15.rain[i],
                 showers: weatherData.minutely15.showers[i],
+                precip: weatherData.minutely15.precip[i],
                 snowfall: weatherData.minutely15.snowfall[i],
                 weatherCode: WMOCodes[weatherCodeNum][dayOrNight],
                 windSpeed: weatherData.minutely15.windSpeed10m[i],

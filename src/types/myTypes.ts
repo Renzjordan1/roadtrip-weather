@@ -1,4 +1,7 @@
+import { LatLng } from "leaflet"
+
 export type WeatherObject = {
+    position?: LatLng,
     location?: string
     isDay?: number,
     time?: string,
@@ -6,6 +9,7 @@ export type WeatherObject = {
     rain?: number,
     showers?: number,
     snowfall?: number,
+    precipitation?: number,
     weatherCode?: Object,
     windSpeed?: number,
     windGust?: number,
