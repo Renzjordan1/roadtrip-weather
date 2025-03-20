@@ -34,9 +34,9 @@ const MapMarkers = () => {
                 // Customized marker to show weather summary
                 var myIcon = L.divIcon({
                     className: 'myIcon',
-                    html: `<span style="font-size: 1vmin">${roundToDecimal(wp['temp'], 1)} &deg;F</span>
-                            <br /> <img style="vertical-align: middle; max-width:35px !important; max-height: 35px !important" src=${wp['weatherCode']['image']} />
-                            <br /> <span style="font-size: 0.8vmin"> ${formattedTime} </span>
+                    html: `<span style="font-size: max(1vh, 12px)">${roundToDecimal(wp['temp'], 1)} &deg;F</span>
+                            <br /> <img style="vertical-align: middle; max-width: 2.5vh !important; max-height: 2.5vh !important" src=${wp['weatherCode']['image']} />
+                            <br /> <span style="font-size: max(0.8vh, 9.6px)"> ${formattedTime} </span>
                         `
                 })
 
@@ -57,8 +57,8 @@ const MapMarkers = () => {
                             Visibility: {roundToDecimal(wp['visibility'], 100)} m <br />
 
                             {/* Driving warnings based on weather data */}
-                            {wp['visibility'] && wp['visibility'] < 1500 && <span style={{color: 'red'}}>*Poor Visibility<br /></span>  } 
-                            {wp['visibility'] && wp['precip'] > 1.88 && <span style={{color: 'red'}}>*Hazardous Roads<br /></span> } 
+                            {wp['visibility'] && wp['visibility'] < 2000 && <span style={{color: 'red'}}>*Poor Visibility<br /></span>  } 
+                            {wp['visibility'] && wp['precip'] > 1.25 && <span style={{color: 'red'}}>*Hazardous Roads<br /></span> } 
 
 
                             </div>
