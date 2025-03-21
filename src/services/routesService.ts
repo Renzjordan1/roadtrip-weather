@@ -53,7 +53,7 @@ const getRoute = async (orig, dest, depTime) => {
 
     // Sending request
     const response = await axios.post(url, request, config)
-    console.log(response)
+    // console.log(response)
     return response.data
 }
 

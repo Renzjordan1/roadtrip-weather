@@ -47,7 +47,7 @@ const WeatherEnroute = () => {
             }
 
             // Set the state at once inside this async so state updates correctly
-            console.log("WP TIMES:", arrivalArr)
+            // console.log("WP TIMES:", arrivalArr)
             setEnrouteTimes(arrivalArr)
         }
 

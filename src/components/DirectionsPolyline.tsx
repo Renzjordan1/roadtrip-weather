@@ -41,11 +41,11 @@ const DirectionsPolyline = () => {
             routesService.getRoute(orig, dest, depTimeStore.depTime)
             .then(response => {
 
-                console.log("Directions:", response)
+                // console.log("Directions:", response)
 
                 const decodedPolyline = decode(response.routes[0].polyline.encodedPolyline, 5)
 
-                console.log("Polyline:", decodedPolyline)
+                // console.log("Polyline:", decodedPolyline)
 
                 setPolylinePath(decodedPolyline.map(arr => {
                     return {
@@ -73,7 +73,7 @@ const DirectionsPolyline = () => {
             try{
                 map.fitBounds(pathBounds)
             } catch { 
-                console.log("Polyline Bounds has not loaded")
+                // console.log("Polyline Bounds has not loaded")
             }
         }
 

@@ -32,7 +32,7 @@ const WeatherInfo = () => {
         .then(response => { 
             const infoFound = response.find((item: any) => item.time == datetime?.toISOString())
             if (infoFound){
-                console.log("Specific Info:", infoFound)
+                // console.log("Specific Info:", infoFound)
                 setSpecificInfo(infoFound)
             } 
             

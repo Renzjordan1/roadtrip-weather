@@ -38,12 +38,12 @@ const DepartInfo = () => {
                 let forwardTime = currTime
                 forwardTime.setSeconds(forwardTime.getSeconds() + 60);
                 depTimeStore.setdepTime(forwardTime?.toISOString())
-                console.log("up")
+                // console.log("up")
 
 
             } else {
                 depTimeStore.setdepTime(datetime?.toISOString())
-                console.log("same")
+                // console.log("same")
 
             }
 
