@@ -13,10 +13,10 @@ The weather can pose dangers on the road. So, how will the weather be throughout
 
 ## Features
 * Routing Directions and Times
-* Complete list of enroute weather details <br />
-![dets](https://github.com/user-attachments/assets/ef741ea5-f211-4eea-bc03-65d80545740b)
 * Popup with detailed weather + warnings <br />
 ![Pop-up](https://github.com/user-attachments/assets/a3c9922f-54fc-49c4-b916-e8eeb3b26664)
+* Complete list of enroute weather details <br />
+![dets](https://github.com/user-attachments/assets/ef741ea5-f211-4eea-bc03-65d80545740b)
 <br/>
 
 ## Demo
