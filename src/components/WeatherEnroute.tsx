@@ -79,7 +79,7 @@ const WeatherEnroute = () => {
                 }
 
                 // Set the state at once inside this async so state updates correctly
-                console.log("WP WEATHER:", wpInfoClone)
+                // console.log("WP WEATHER:", wpInfoClone)
                 enrouteInfoStore.setInfo(wpInfoClone)
             }
             
