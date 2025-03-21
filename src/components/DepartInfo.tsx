@@ -47,7 +47,7 @@ const DepartInfo = () => {
 
             }
 
-            console.log(datetime.toLocaleString())
+            // console.log(datetime.toLocaleString())
 
         }
     }
