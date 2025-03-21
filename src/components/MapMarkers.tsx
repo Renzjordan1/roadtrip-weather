@@ -1,4 +1,5 @@
 import { Marker, Popup } from 'react-leaflet'
+import * as L from "leaflet";
 
 import moment from 'moment-timezone';
 

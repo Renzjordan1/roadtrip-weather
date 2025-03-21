@@ -18,7 +18,10 @@ const MapEvents = () => {
       // Set and indicate Lat/Lng of selected spot
       console.log('clicked at:', e.latlng)
       latLngStore.setLatLng(e.latlng.lat, e.latlng.lng)
-      map.openPopup(L.popup(e.latlng, {content: `${e.latlng.lat}, ${e.latlng.lng}`}))
+      map.openPopup(L.popup()
+        .setLatLng([e.latlng.lat, e.latlng.lng])
+        .setContent(`${e.latlng.lat}, ${e.latlng.lng}`)
+      )
     },
 
   })

@@ -32,8 +32,8 @@ const getWeatherData = async (lat: number, lon: number) => {
     
     // Attributes for timezone and location
     const utcOffsetSeconds = response.utcOffsetSeconds();
-    const timezone = response.timezone();
-    const timezoneAbbreviation = response.timezoneAbbreviation();
+    // const timezone = response.timezone();
+    // const timezoneAbbreviation = response.timezoneAbbreviation();
     const latitude = response.latitude();
     const longitude = response.longitude();
     
