@@ -6,7 +6,8 @@ An app to determine weather during long drives
 <br/>
 
 ## Summary
-The weather can pose dangers on the road. So, how will the weather be throughout my drive?
+On my long drives, I've experienced times where weather turns for the worse. It's clear and sunny at first :sunny:, then a few hours in, suddenly it's foggy and storming :fearful:. So, I made this so one can know "How will the weather be throughout my drive?"
+
 * Input: Choose your origin, destination, and departure time.
 * Output: Map will display directions and weather information throughout the route at estimated times.<br />
 ![Output](https://github.com/user-attachments/assets/bf58c1f3-6ed1-4100-af85-e132c4d3263c )
