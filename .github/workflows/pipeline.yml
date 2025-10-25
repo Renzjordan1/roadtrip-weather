@@ -18,3 +18,9 @@ jobs:
         run: npm install
       - name: Check style
         run: npm run lint
+      - name: Checkout code
+        uses: actions/checkout@main #consider using pin for dependabot auto update
+        
+      - name: Trigger deployment
+        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+      
