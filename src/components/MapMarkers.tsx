@@ -23,7 +23,7 @@ const MapMarkers = () => {
     return (
     <>
         {/* Create marker at each enroute point */}
-        {enrouteInfoStore.wpInfo.map((wp: WeatherObject, i: number) => {
+        {enrouteInfoStore.wpInfo.map((wp: WeatherObject, i: any) => {
 
             if(wp.position && wp.weatherCode){
                 
