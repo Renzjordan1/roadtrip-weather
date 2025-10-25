@@ -120,6 +120,8 @@ const DepartInfo = () => {
                         setDatetime(newValue)
                     }
                 }}
+                minDate={new Date() }
+                maxDate={new Date(new Date().setDate(new Date().getDate() + 9))}
                 />
             </LocalizationProvider>
         </div>

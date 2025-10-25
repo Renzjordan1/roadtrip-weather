@@ -71,9 +71,17 @@ const WeatherEnroute = () => {
                     try{
                         const weatherData = await openMeteo.getWeatherData(enrouteTimes[i].wp[0], enrouteTimes[i].wp[1])
                         const roundTime = roundTimeToXMin(15, enrouteTimes[i].time)
+
                         // console.log(weatherData.find((item: any) => item.time == roundTime.toISOString()))
+                        const weatherInfoItem = weatherData!.find((item: WeatherObject) => item.time == roundTime.toISOString())!
                         
-                        wpInfoClone.push(weatherData.find((item: WeatherObject) => item.time == roundTime.toISOString())!)
+                        // Error if enrouteTime is out of bounds of forecast data
+                        if (weatherInfoItem === undefined) {
+                            throw new Error(`Can't find the weather forecast`);
+                        }
+
+                        wpInfoClone.push(weatherInfoItem)
+
                     } catch {
                         console.log("Missed Weather Datapoint!")
                     }

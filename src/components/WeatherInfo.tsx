@@ -30,7 +30,7 @@ const WeatherInfo = () => {
     useEffect(() => {
         openMeteo.getWeatherData(latLngStore.lat, latLngStore.lng)
         .then(response => { 
-            const infoFound = response.find((item: WeatherObject) => item.time == datetime?.toISOString())
+            const infoFound = response!.find((item: WeatherObject) => item.time == datetime?.toISOString())
             if (infoFound){
                 // console.log("Specific Info:", infoFound)
                 setSpecificInfo(infoFound)
