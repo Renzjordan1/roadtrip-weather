@@ -9,7 +9,7 @@ import { WeatherObject } from '../types/myTypes';
 
 
 
-const getWeatherData = async (lat: number, lon: number) => {
+const getWeatherData = async (lat: number, lon: number): Promise<WeatherObject[]> => {
 
     // Weather data to get
     const params = {
@@ -41,7 +41,7 @@ const getWeatherData = async (lat: number, lon: number) => {
     const hourly = response.hourly()!;
 
     // Get actual location name
-    var actualLocation = await geocodeService.getReverseGeocode(latitude, longitude)
+    let actualLocation = await geocodeService.getReverseGeocode(latitude, longitude)
     try{
         actualLocation = actualLocation.results[actualLocation.results.length-4].formatted_address
     } catch {
@@ -81,13 +81,13 @@ const getWeatherData = async (lat: number, lon: number) => {
 
 
     // Transform API data into an array of the data for each specific time
-    let m15Data: {}[] = []
+    const m15Data: WeatherObject[] = []
 
     for (let i = 0; i < weatherData.minutely15.time.length; i++) {
 
         const dayOrNight = weatherData.minutely15.isDay[i] == 1 ? 'day' : 'night'
 
-        let weatherCodeNum:keyof typeof WMOCodes = weatherData.minutely15.weatherCode[i].toString() as keyof typeof WMOCodes
+        const weatherCodeNum:keyof typeof WMOCodes = weatherData.minutely15.weatherCode[i].toString() as keyof typeof WMOCodes
 
         m15Data.push(
             {

@@ -21,7 +21,7 @@ const DirectionsPolyline = () => {
     const polylinePathRef = useRef<L.Polyline>(null)
     
     // Local States
-    const [polylinePath, setPolylinePath] = useState<any[]>([])
+    const [polylinePath, setPolylinePath] = useState<{ lat: number, lng: number }[]>([])
 
     // Global Stores
     const enrouteWPStore = useEnrouteWPStore()
@@ -62,7 +62,10 @@ const DirectionsPolyline = () => {
 
             })
         }
-    }, [placesStore, depTimeStore])
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [placesStore, depTimeStore]) 
+
 
     // Set Bounds top fit the directions polyline
     useEffect(() => {        
@@ -77,7 +80,9 @@ const DirectionsPolyline = () => {
             }
         }
 
-    }, [polylinePath])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [polylinePath]) 
+
 
 
 

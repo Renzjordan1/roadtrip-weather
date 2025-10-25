@@ -14,7 +14,7 @@ const MapEvents = () => {
 
   // Map Interations
   const map = useMapEvents({
-    click: (e) => {
+    click: (e: L.LeafletMouseEvent) => {
       // Set and indicate Lat/Lng of selected spot
       console.log('clicked at:', e.latlng)
       latLngStore.setLatLng(e.latlng.lat, e.latlng.lng)

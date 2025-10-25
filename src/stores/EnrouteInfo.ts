@@ -6,7 +6,7 @@ import { WeatherObject } from '../types/myTypes';
 // Store to share weather info at waypoints in between the route
 type EnrouteInfoState = {
     wpInfo: WeatherObject[],
-    setInfo: (weatherObjectArr) => void
+    setInfo: (weatherObjectArr: WeatherObject[]) => void
 }
 
 const useEnrouteInfoStore = create<EnrouteInfoState>((set) => ({

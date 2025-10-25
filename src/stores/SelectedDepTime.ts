@@ -2,8 +2,8 @@ import { create } from 'zustand'
 
 // Store to share selected Departure Time between components
 type DepTimeState = {
-    depTime: "",
-    setdepTime: (newTime) => void,
+    depTime: string,
+    setdepTime: (newTime: string) => void,
 }
 
 const useDepTimeStore = create<DepTimeState>((set) => ({

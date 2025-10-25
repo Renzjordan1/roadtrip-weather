@@ -8,6 +8,7 @@ import openMeteo from '../services/openMeteo'
 
 import { roundTimeToXMin } from '../helpers/timeFuncs';
 import WeatherInfoText from './WeatherInfoText';
+import { WeatherObject } from '../types/myTypes';
 
 
 
@@ -15,7 +16,7 @@ import WeatherInfoText from './WeatherInfoText';
 const WeatherEnroute = () => {
 
     // Local states
-    const [enrouteTimes, setEnrouteTimes] = useState<any[]>()
+    const [enrouteTimes, setEnrouteTimes] = useState<{ wp: [number, number], time: Date }[]>()
 
 
     // Global Stores
@@ -28,20 +29,20 @@ const WeatherEnroute = () => {
     useEffect(() => {
 
         
-        const wpTimeFunc = async (waypoints, startTime) => {
-
+        const wpTimeFunc = async (waypoints: [number, number][], startTime: string) => {
+            
             // Starting point
-            var arrivalArr = [ {wp: waypoints[0], time: new Date(startTime)} ]
+            const arrivalArr = [ {wp: waypoints[0], time: new Date(startTime)} ]
 
             // Next points
             for (let i = 1; i < waypoints.length; i++) {
-                let route = await routesService.getRoute(waypoints[0], waypoints[i], startTime)
+                const route = await routesService.getRoute(waypoints[0], waypoints[i], startTime)
 
-                let duration = Number(route.routes[0].duration.slice(0, -1))
-                let arriveTime = new Date(startTime)
+                const duration = Number(route.routes[0].duration.slice(0, -1))
+                const arriveTime = new Date(startTime)
                 arriveTime.setSeconds(arriveTime.getSeconds() + duration);
 
-                let arrive = {wp: waypoints[i], time: arriveTime}
+                const arrive = {wp: waypoints[i], time: arriveTime}
 
                 arrivalArr.push(arrive)
             }
@@ -63,18 +64,18 @@ const WeatherEnroute = () => {
             const wpWeatherFunc = async () => {
 
                 // Empty array to build on
-                var wpInfoClone: any[] = []
+                const wpInfoClone: WeatherObject[]  = []
 
                 // Weather at each point/time
                 for (let i = 0; i < enrouteTimes.length; i++) {
                     try{
-                        let weatherData = await openMeteo.getWeatherData(enrouteTimes[i].wp[0], enrouteTimes[i].wp[1])
-                        let roundTime = roundTimeToXMin(15, enrouteTimes[i].time)
+                        const weatherData = await openMeteo.getWeatherData(enrouteTimes[i].wp[0], enrouteTimes[i].wp[1])
+                        const roundTime = roundTimeToXMin(15, enrouteTimes[i].time)
                         // console.log(weatherData.find((item: any) => item.time == roundTime.toISOString()))
                         
-                        wpInfoClone.push(weatherData.find((item: any) => item.time == roundTime.toISOString()))
+                        wpInfoClone.push(weatherData.find((item: WeatherObject) => item.time == roundTime.toISOString())!)
                     } catch {
-
+                        console.log("Missed Weather Datapoint!")
                     }
                 }
 
@@ -87,8 +88,9 @@ const WeatherEnroute = () => {
                 
         }
 
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [enrouteTimes])
+
 
 
     // Display Enroute Weather Info

@@ -35,7 +35,7 @@ const DepartInfo = () => {
 
             // Fast forward datetime so that Google Routes API accepts (it denies old times)
             if( ((datetime.getTime() - currTime.getTime()) / 1000) <= 60){
-                let forwardTime = currTime
+                const forwardTime = currTime
                 forwardTime.setSeconds(forwardTime.getSeconds() + 60);
                 depTimeStore.setdepTime(forwardTime?.toISOString())
                 // console.log("up")
@@ -71,14 +71,18 @@ const DepartInfo = () => {
             )
         }
 
-    }, [selectedOrigin, selectedDestination])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedOrigin, selectedDestination]) 
+
 
     // Update departure time
     useEffect(() => {
 
         updateDepTime()
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [datetime])
+
 
 
     // Input origin, destination, and depart time -> sent to global store to share. 

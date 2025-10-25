@@ -10,7 +10,7 @@ export type WeatherObject = {
     showers?: number,
     snowfall?: number,
     precipitation?: number,
-    weatherCode?: Object,
+    weatherCode?: object,
     windSpeed?: number,
     windGust?: number,
     visibility?: number

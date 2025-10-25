@@ -2,13 +2,13 @@ import { create } from 'zustand'
 
 // Store to share waypoints in between the route between components
 type EnrouteWPState = {
-    startTime: 0,
-    waypoints: [],
-    setWaypoints: (waypointArr, start) => void,
+    startTime: string,
+    waypoints: [number, number][],
+    setWaypoints: (waypointArr: [number, number][], start: string) => void,
 }
 
 const useEnrouteWPStore = create<EnrouteWPState>((set) => ({
-  startTime: 0,
+  startTime: '',
   waypoints: [],
   setWaypoints: (waypointArr, start) => set({ waypoints: waypointArr, startTime: start }),
 }))

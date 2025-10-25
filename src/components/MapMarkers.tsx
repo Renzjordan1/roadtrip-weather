@@ -6,6 +6,7 @@ import moment from 'moment-timezone';
 import useEnrouteInfoStore from '../stores/EnrouteInfo';
 
 import { roundToDecimal } from '../helpers/mathFuncs';
+import { WeatherObject } from '../types/myTypes';
 
 
 
@@ -22,20 +23,20 @@ const MapMarkers = () => {
     return (
     <>
         {/* Create marker at each enroute point */}
-        {enrouteInfoStore.wpInfo.map((wp, i) => {
+        {enrouteInfoStore.wpInfo.map((wp: WeatherObject, i: number) => {
 
             if(wp.position && wp.weatherCode){
                 
                 // Short Format Time
-                var momentTime = moment(wp['time'])
-                var formattedTime = momentTime.tz('America/New_York').format("h:mma")
+                const momentTime = moment(wp['time'])
+                const formattedTime = momentTime.tz('America/New_York').format("h:mma")
                 // console.log("Time:", formattedTime)
 
 
                 // Customized marker to show weather summary
-                var myIcon = L.divIcon({
+                const myIcon = L.divIcon({
                     className: 'myIcon',
-                    html: `<span style="font-size: max(1vh, 12px)">${roundToDecimal(wp['temp'], 1)} &deg;F</span>
+                    html: `<span style="font-size: max(1vh, 12px)">${roundToDecimal(wp['temp']!, 1)} &deg;F</span>
                             <br /> <img style="vertical-align: middle; max-width: 2.5vh !important; max-height: 2.5vh !important" src=${wp['weatherCode']['image']} />
                             <br /> <span style="font-size: max(0.8vh, 9.6px)"> ${formattedTime} </span>
                         `
@@ -50,12 +51,12 @@ const MapMarkers = () => {
                             <div style={{ textAlign: 'center' }}>
                             <span style={{ fontWeight: 'bold' }}> {wp['location']} </span> <br />
                             Time: {formattedTime} <br />
-                            Temperature: {roundToDecimal(wp['temp'], 1)} &deg;F <br /> 
+                            Temperature: {roundToDecimal(wp['temp']!, 1)} &deg;F <br /> 
                             Precipitation: {roundToDecimal(wp['precip'], 100)} mm <br />
                             Conditions: {wp['weatherCode']['description']} <img style={{ verticalAlign: 'middle', maxWidth:'35px', maxHeight: '35px'}} src={wp['weatherCode']['image']} /> <br />
-                            Wind Speed: {roundToDecimal(wp['windSpeed'], 100)} km/h <br />
-                            Wind Gust: {roundToDecimal(wp['windGust'], 100)} km/h <br />
-                            Visibility: {roundToDecimal(wp['visibility'], 100)} m <br />
+                            Wind Speed: {roundToDecimal(wp['windSpeed']!, 100)} km/h <br />
+                            Wind Gust: {roundToDecimal(wp['windGust']!, 100)} km/h <br />
+                            Visibility: {roundToDecimal(wp['visibility']!, 100)} m <br />
 
                             {/* Driving warnings based on weather data */}
                             {wp['visibility'] && wp['visibility'] < 2000 && <span style={{color: 'red'}}>*Poor Visibility<br /></span>  } 
