@@ -115,7 +115,7 @@ const DepartInfo = () => {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
                 value={datetime}
-                onChange={(newValue) => {
+                onAccept={(newValue: Date|null) => {
                     if(newValue){
                         setDatetime(newValue)
                     }
