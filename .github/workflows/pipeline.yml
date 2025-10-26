@@ -32,7 +32,14 @@ jobs:
     if: ${{ github.event_name == 'push' }}
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
+        - uses: actions/checkout@v4
+          with:
+            ref: ${{ github.event.pull_request.merge_commit_sha }}
+            fetch-depth: '0'
+            
         - name: Bump version and push tag
           uses: anothrNick/github-tag-action@v1
           env:
