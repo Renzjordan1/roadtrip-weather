@@ -41,6 +41,11 @@ jobs:
             fetch-depth: '0'
             
         - name: Bump version and push tag
-          uses: anothrNick/github-tag-action@v1
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
+            CONDITION: ${{ contains(env.COMMIT_MESSAGES, '#SKIP') }}
+          if: ${{ env.CONDITION == 'false' }}
+          uses: anothrNick/github-tag-action@v1
+
+            
