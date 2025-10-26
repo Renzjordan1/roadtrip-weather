@@ -62,7 +62,8 @@ const WeatherEnroute = () => {
         }
 
         wpTimeFunc(enrouteWPStore.waypoints, enrouteWPStore.startTime)
-            
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [enrouteWPStore])
 
 
