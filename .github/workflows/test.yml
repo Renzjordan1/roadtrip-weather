@@ -26,6 +26,6 @@ jobs:
       - name: Say hello
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
-        if: ${{ contains(${{ env.COMMIT_MESSAGES }}, '#SKIP') == 'true' }}
+        if: ${{ contains(env.COMMIT_MESSAGES, '#SKIP') }}
         run: |
           echo "Hello World!"
