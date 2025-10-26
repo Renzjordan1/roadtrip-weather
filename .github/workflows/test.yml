@@ -29,3 +29,11 @@ jobs:
         if: ${{ contains(env.COMMIT_MESSAGES, '#SKIP') }}
         run: |
           echo "Hello World!"
+
+      - name: The job has succeeded
+        if: ${{ success() }}
+        uses: rjstone/discord-webhook-notify@v2
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          text: |
+              GitHub Actions workflow run completed: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
