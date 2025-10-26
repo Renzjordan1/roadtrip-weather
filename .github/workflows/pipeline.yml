@@ -49,31 +49,33 @@ jobs:
 
   send_notification:
     needs: [simple_deployment_pipeline]
-    - name: The job has succeeded
-      if: ${{ success() }}
-      uses: rjstone/discord-webhook-notify@v2
-      with:
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-        text: |
-            ✅ Workflow Success for ${{ github.repository }}!
-            GitHub Actions workflow run completed: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-              
-    - name: The job has failed
-      if: ${{ failure() }}
-      uses: rjstone/discord-webhook-notify@v2
-      with:
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-        text: |
-            ❌ Workflow Failure for ${{ github.repository }}!
-            GitHub Actions workflow run completed: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: The job has succeeded
+        if: ${{ success() }}
+        uses: rjstone/discord-webhook-notify@v2
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          text: |
+              ✅ Workflow Success for ${{ github.repository }}!
+              GitHub Actions workflow run completed: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                
+      - name: The job has failed
+        if: ${{ failure() }}
+        uses: rjstone/discord-webhook-notify@v2
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          text: |
+              ❌ Workflow Failure for ${{ github.repository }}!
+              GitHub Actions workflow run completed: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-    - name: The job has canceled
-      if: ${{ cancelled() }}
-      uses: rjstone/discord-webhook-notify@v2
-      with:
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-        text: |
-            ⚠️ Workflow Canceled for ${{ github.repository }}!
-            GitHub Actions workflow run completed: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      - name: The job has canceled
+        if: ${{ cancelled() }}
+        uses: rjstone/discord-webhook-notify@v2
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          text: |
+              ⚠️ Workflow Canceled for ${{ github.repository }}!
+              GitHub Actions workflow run completed: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             
