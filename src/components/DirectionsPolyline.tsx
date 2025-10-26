@@ -6,6 +6,7 @@ import { useMap, Polyline } from 'react-leaflet'
 import useEnrouteWPStore from '../stores/EnrouteWP';
 import usePlacesStore from '../stores/SelectedPlaces';
 import useDepTimeStore from '../stores/SelectedDepTime';
+import useMessageAlertStore from '../stores/MessageAlert';
 
 import routesService from '../services/routesService';
 
@@ -27,8 +28,7 @@ const DirectionsPolyline = () => {
     const enrouteWPStore = useEnrouteWPStore()
     const placesStore = usePlacesStore()
     const depTimeStore = useDepTimeStore()
-
-
+    const messageAlertStore = useMessageAlertStore()
 
 
     // Get Directions from API
@@ -60,6 +60,13 @@ const DirectionsPolyline = () => {
                 // console.log("Waypoints:", waypoints)
                 enrouteWPStore.setWaypoints(waypoints, depTimeStore.depTime)
 
+                // Success Alert
+                messageAlertStore.setAlert(true, "Route retrieved!", "success")
+            })
+
+            // Error alert
+            .catch(() => {
+                messageAlertStore.setAlert(true, "Error in retrieving route!", "error")
             })
         }
     

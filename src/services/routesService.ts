@@ -56,6 +56,11 @@ const getRoute = async (orig, dest, depTime) => {
       // Sending request
       const response = await axios.post(url, request, config)
       
+      // No route found -> throw error
+      if (Object.keys(response.data).length == 0){
+        throw new Error(`Can't get route from ${orig} to ${dest}!`);
+      }
+
       return response.data
 
     } catch (error) {

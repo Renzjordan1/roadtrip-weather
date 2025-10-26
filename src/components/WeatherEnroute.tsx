@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 
 import useEnrouteWPStore from '../stores/EnrouteWP';
 import useEnrouteInfoStore from '../stores/EnrouteInfo';
+import useMessageAlertStore from '../stores/MessageAlert';
+
 
 import routesService from '../services/routesService';
 import openMeteo from '../services/openMeteo'
@@ -22,6 +24,8 @@ const WeatherEnroute = () => {
     // Global Stores
     const enrouteWPStore = useEnrouteWPStore()
     const enrouteInfoStore = useEnrouteInfoStore()
+    const messageAlertStore = useMessageAlertStore()
+
 
 
 
@@ -36,15 +40,20 @@ const WeatherEnroute = () => {
 
             // Next points
             for (let i = 1; i < waypoints.length; i++) {
-                const route = await routesService.getRoute(waypoints[0], waypoints[i], startTime)
+                try {
+                    const route = await routesService.getRoute(waypoints[0], waypoints[i], startTime)
 
-                const duration = Number(route.routes[0].duration.slice(0, -1))
-                const arriveTime = new Date(startTime)
-                arriveTime.setSeconds(arriveTime.getSeconds() + duration);
+                    const duration = Number(route.routes[0].duration.slice(0, -1))
+                    const arriveTime = new Date(startTime)
+                    arriveTime.setSeconds(arriveTime.getSeconds() + duration);
 
-                const arrive = {wp: waypoints[i], time: arriveTime}
+                    const arrive = {wp: waypoints[i], time: arriveTime}
 
-                arrivalArr.push(arrive)
+                    arrivalArr.push(arrive)
+
+                } catch {
+                    messageAlertStore.setAlert(true, "Error getting waypoints throughout route!", "error")
+                }
             }
 
             // Set the state at once inside this async so state updates correctly
@@ -59,8 +68,8 @@ const WeatherEnroute = () => {
 
     // Get weather data at each waypoint and time
     useEffect(() => {
-        if (enrouteTimes){
-
+        if (enrouteTimes && enrouteTimes[0].wp){
+            
             const wpWeatherFunc = async () => {
 
                 // Empty array to build on
@@ -83,7 +92,7 @@ const WeatherEnroute = () => {
                         wpInfoClone.push(weatherInfoItem)
 
                     } catch {
-                        console.log("Missed Weather Datapoint!")
+                        messageAlertStore.setAlert(true, "Error in retrieving forecasts!", "error")
                     }
                 }
 

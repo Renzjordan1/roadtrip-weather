@@ -9,7 +9,7 @@ type LatLngState = {
     setLng: (newLng: number) => void
 }
 
-const useLatLonStore = create<LatLngState>((set) => ({
+const useLatLngStore = create<LatLngState>((set) => ({
   lat: 0,
   lng: 0,
   setLatLng: (newLat, newLng) => set({ lat: newLat, lng: newLng }),
@@ -17,4 +17,4 @@ const useLatLonStore = create<LatLngState>((set) => ({
   setLng: (newLng) => set({ lng: newLng })
 }))
 
-export default useLatLonStore;
+export default useLatLngStore;
